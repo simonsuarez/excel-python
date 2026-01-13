@@ -11,7 +11,7 @@ def cargar_excel(path: str):
         for _, row in df.iterrows():
             usuario = Usuario(
                 name=row["name"],
-                lastName=row.get("lastName"),
+                last_name=row.get("last_name"),
                 age=row["age"],
                 email=row["email"]
             )

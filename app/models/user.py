@@ -8,6 +8,6 @@ class Usuario(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(30))
-    lastName: Mapped[Optional[str]] = mapped_column(String(30), default=None)
+    last_name: Mapped[Optional[str]] = mapped_column(String(30), default=None)
     age: Mapped[int] = mapped_column(Integer)
     email: Mapped[str] = mapped_column(String(100), unique=True, index=True)
