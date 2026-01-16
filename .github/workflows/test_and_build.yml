@@ -35,14 +35,14 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r app/requirements.txt
           pip install pytest==8.2.0 httpx==0.28.0 pytest-asyncio==1.2.0 pytest-cov==5.0.0 ruff bandit safety
       # Runs test
       - name: Run tests
         working-directory: ./app
         env:
           PYTHONPATH: /app # LA SOLUCIÓN (igual que Docker)
-        run: pytest tests/ --cov=. --cov-report=xml
+        run: pytest tests/ --cov=main --cov-report=xml
 
       # Runs
       - name: Lint with Ruff
