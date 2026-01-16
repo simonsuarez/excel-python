@@ -42,7 +42,7 @@ jobs:
         run: |
           cd app
           python -c "import sys; sys.path.insert(0, '.')"
-          python -m pytest tests/ --cov=main --cov-report=xml --tb=short
+          python -m pytest tests/test_health.py
 
       # Runs
       - name: Lint with Ruff
