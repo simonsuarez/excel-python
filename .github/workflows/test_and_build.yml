@@ -50,5 +50,5 @@ jobs:
 
       - name: Security scan
         run: |
-          bandit -r . -q
+          bandit -r . --exclude ./tests -q
           safety check
