@@ -36,6 +36,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/excelDB
       - SECRET_KEY=dev_secret_key_change_in_production
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
     networks:
       - ExcelDB-network
     depends_on:

@@ -14,11 +14,11 @@ def comprobar_conexion_db(db):
         resultado = db.execute(text("SELECT 1")).scalar()
         # return {"status": "ok bd"} if resultado == 1 else {"status": "error"}
         if resultado == 1:
-            return {"status": "ok bd"} 
+            return {"databases": resultado} 
         else:
-            return {"status": "error"}
+            return {"databases": "error"}
     except Exception as e:
-        return {"status": "error", "detail": str(e)}
+        return {"databases": "error", "detail": str(e)}
 
 def crear_usuario_desde_excel(path, db):
     try:
