@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r app/requirements.txt
-          pip install pytest==8.2.0 httpx==0.28.0 pytest-asyncio==1.2.0 pytest-cov==5.0.0 ruff bandit pip-audit
+          pip install -r app/requirements-dev.txt
       # Runs test
       - name: Run tests
         run: |
