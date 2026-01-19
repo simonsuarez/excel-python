@@ -56,9 +56,9 @@ uvicorn main:app --reload
 
 ## Endpoints principales:
 
-• `/health` — Verifica que la API está activa.
-• `/users/select_db` — Test de conexión a la base de datos.
-• `/users/cargar_excel` — Carga usuarios desde un archivo Excel.
+- **/health** Verifica que la API está activa.
+- **/users/select_db** Test de conexión a la base de datos.
+- **/users/cargar_excel** Carga usuarios desde un archivo Excel.
 
 ## Ejecutar los test
 
