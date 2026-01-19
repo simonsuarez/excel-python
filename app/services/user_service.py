@@ -29,7 +29,9 @@ def crear_usuario_desde_excel(path, db):
         contadorEmailInvalido = 0
 
         for _, row in df.iterrows():
-            if row["age"] < 18:
+            age = int(row["age"])
+
+            if age < 18:
                 contadorMenorEdad += 1
                 continue  # saltar si el usuario es menor de edad
 
