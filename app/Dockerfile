@@ -21,4 +21,4 @@ COPY . /app
 EXPOSE 8000
 
 # Ajusta "main:app" si tu app se expone desde otro módulo/objeto
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
