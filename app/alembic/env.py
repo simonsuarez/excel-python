@@ -1,11 +1,10 @@
 import os
 from logging.config import fileConfig
 
-from sqlalchemy import create_engine, pool
-
 import models.user_model  # noqa: F401
 from alembic import context
 from db.base import Base
+from sqlalchemy import create_engine, pool
 
 config = context.config
 

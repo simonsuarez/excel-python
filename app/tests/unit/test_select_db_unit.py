@@ -2,9 +2,9 @@
 from unittest.mock import MagicMock
 
 import pytest
-
 from services.user_service import comprobar_conexion_db
 from sqlalchemy.exc import SQLAlchemyError
+
 
 @pytest.mark.unit
 def test_comprobar_conexion_db_ok():

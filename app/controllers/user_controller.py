@@ -1,10 +1,9 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, File, UploadFile
-from sqlalchemy.orm import Session
-
 from db.conexionBD import get_db
+from fastapi import APIRouter, Depends, File, UploadFile
 from services.user_service import comprobar_conexion_db, crear_usuario_desde_excel
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
