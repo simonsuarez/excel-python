@@ -6,7 +6,7 @@ from db.base import Base
 class Usuario(Base):
     __tablename__ = 'usuarios'
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
     last_name: Mapped[Optional[str]] = mapped_column(String(30), default=None)
     age: Mapped[int] = mapped_column(Integer)
