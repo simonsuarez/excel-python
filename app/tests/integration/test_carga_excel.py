@@ -1,8 +1,10 @@
-from fastapi.testclient import TestClient
-from main import app
-import pandas as pd
 import tempfile
+
+import pandas as pd
 import pytest
+from fastapi.testclient import TestClient
+
+from main import app
 
 client = TestClient(app)
 
@@ -13,9 +15,11 @@ def crear_excel_prueba():
         {"name": "Pedro", "last_name": "Diaz", "age": 30, "email": "correo_invalido"}
     ])
 
-    tmp = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
-    df.to_excel(tmp.name, index=False)
-    return tmp.name
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
+        excel_path = tmp.name
+
+    df.to_excel(excel_path, index=False)
+    return excel_path
 
 @pytest.mark.integration
 def test_cargar_excel():

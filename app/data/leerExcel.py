@@ -1,7 +1,9 @@
 import pandas as pd
-from sqlalchemy.orm import Session
 from app.models.user_model import Usuario
+from sqlalchemy.orm import Session
+
 from db.conexionBD import SessionLocal
+
 
 def cargar_excel(path: str):
     db: Session = SessionLocal()
@@ -19,9 +21,9 @@ def cargar_excel(path: str):
 
         db.commit()
         print(f"Insertados {len(df)} registros")
-    except Exception as e:
+    except Exception:
         db.rollback()
-        raise e
+        raise
     finally:
         db.close()
 

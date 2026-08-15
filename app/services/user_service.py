@@ -1,7 +1,11 @@
-from sqlalchemy import select, text
-import pandas as pd
-from models.user_model import Usuario
 import re
+from zipfile import BadZipFile
+
+import pandas as pd
+from sqlalchemy import select, text
+from sqlalchemy.exc import SQLAlchemyError
+
+from models.user_model import Usuario
 
 EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
 
@@ -17,7 +21,7 @@ def comprobar_conexion_db(db):
             return {"databases": resultado} 
         else:
             return {"databases": "error"}
-    except Exception as e:
+    except SQLAlchemyError as e:
         return {"databases": "error", "detail": str(e)}
 
 def crear_usuario_desde_excel(path, db):
@@ -63,6 +67,6 @@ def crear_usuario_desde_excel(path, db):
                 , "underage_records": contadorMenorEdad
                 , "invalid_email_records": contadorEmailInvalido
                 , "all_records": len(df)}
-    except Exception as e:
+    except (BadZipFile, KeyError, TypeError, ValueError, SQLAlchemyError) as e:
         db.rollback()
         return {"status": "error", "detail": str(e)}

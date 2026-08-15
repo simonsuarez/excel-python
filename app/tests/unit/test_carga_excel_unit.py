@@ -1,7 +1,10 @@
 from unittest.mock import MagicMock, patch
-from services.user_service import crear_usuario_desde_excel
+
 import pandas as pd
 import pytest
+
+from services.user_service import crear_usuario_desde_excel
+
 
 @pytest.mark.unit
 def test_crear_usuario_desde_excel_contadores():
