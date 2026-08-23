@@ -122,11 +122,15 @@ pytest --cov=main --cov-report=term-missing
 
 ## CI/CD
 
-Integración continua con GitHub Actions:
+La integración continua se ejecuta en cada Pull Request hacia `main`, en cada
+push a `main` y también puede iniciarse manualmente.
 
-- **Ejecuta tests unitarios** en cada push a main.
-- **Linter con Ruff** y análisis de seguridad con Bandit y Pip-Audit.
-- **Coverage report** opcional.
+- **Backend:** pruebas unitarias, Ruff, Bandit, Pip-Audit y construcción de la
+  imagen Docker.
+- **Frontend:** instalación reproducible con `npm ci`, pruebas con Vitest,
+  compilación TypeScript/Vite y construcción de la imagen Docker de producción.
+- La imagen del backend se publica en GHCR únicamente después de un push a
+  `main`; los Pull Requests solamente construyen y validan las imágenes.
 
 Archivo del workflow: .github/workflows/test_and_build.yml.
 
