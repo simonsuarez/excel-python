@@ -44,14 +44,58 @@ pip install -r requirements-dev.txt
 
 ## Levantar la aplicación
 
-```bash
-# Con Docker Compose
+La primera vez, crea la configuración local a partir del ejemplo:
 
-docker-compose up --build
+```bash
+cp config.env.example config.env
+```
+
+```bash
+# Con Docker Compose: PostgreSQL, FastAPI y React/Vite
+
+docker compose up --build
 
 # Sin Docker
 
 uvicorn main:app --reload
+```
+
+Una vez que los contenedores estén listos:
+
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
+- Swagger: http://localhost:8000/docs
+
+El frontend utiliza el proxy de Vite para enviar `/api` al contenedor del
+backend. Por eso no necesita CORS durante el desarrollo con Docker.
+
+Para detener el entorno:
+
+```bash
+docker compose down
+```
+
+Los datos de PostgreSQL y las dependencias de Node se conservan en volúmenes
+de Docker.
+
+El servicio temporal `migrate` ejecuta las migraciones de Alembic antes de
+iniciar FastAPI. Así, una base local nueva queda preparada automáticamente.
+
+## Frontend
+
+El frontend está en `frontend/` y utiliza:
+
+- React
+- Vite
+- TypeScript y TSX
+- HTML5 semántico
+- CSS propio responsive
+
+Comandos útiles dentro del contenedor:
+
+```bash
+docker compose exec frontend npm test
+docker compose exec frontend npm run build
 ```
 
 ## Endpoints principales:
