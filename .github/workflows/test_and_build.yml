@@ -1,71 +1,89 @@
-# This is a basic workflow to help you get started with Actions
 name: test and build
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
     branches: ["main"]
 
-  # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    branches: ["main"]
+
   workflow_dispatch:
 
 permissions:
   contents: read
-  packages: write # necesario para publicar imagenes en GHCR
+  packages: write
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  test_and_build:
-    # The type of runner that the job will run on
+  backend:
+    name: Backend · pruebas, seguridad e imagen
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v6
 
-      # Runs a single command using the runners shell
       - name: Setup python 3.12
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      # Runs a set of commands using the runners shell
       - name: Install dependencies
         run: |
           pip install -r app/requirements.txt
           pip install -r app/requirements-dev.txt
 
-      # Runs unit test
       - name: Run tests
         run: |
           cd app
           python -m pytest -m unit
 
-      # Runs ruff linter
       - name: Lint with Ruff
         run: ruff check .
 
-      # Security scan
       - name: Security scan
         run: |
           bandit -r . --skip B101 -q
           cd app && pip-audit
 
-      # Login to GHCR
       - name: Login to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push Docker image
-      - name: Build and push Docker image
+      - name: Build and optionally push backend image
         uses: docker/build-push-action@v7
         with:
           context: ./app
-          push: true
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           tags: ghcr.io/${{ github.repository }}:latest
+
+  frontend:
+    name: Frontend · pruebas, build e imagen
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build production assets
+        run: npm run build
+
+      - name: Build production Docker image
+        run: docker build --target production --tag excelpython-frontend:ci .

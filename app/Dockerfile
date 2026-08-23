@@ -7,8 +7,8 @@ ENV PYTHONUNBUFFERED=1
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    libpq5 \      
-    curl \      
+    libpq5 \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # instalar dependencias si existe requirements.txt

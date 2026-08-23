@@ -2,12 +2,15 @@
 venv/
 .env/
 config.env
+frontend/.env.local
 
 # Archivos compilados o temporales
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+frontend/node_modules/
+frontend/dist/
 
 # Logs
 *.log
@@ -17,4 +20,5 @@ __pycache__/
 
 # Docker
 *.dockerignore
+!frontend/.dockerignore
 docker-compose.override.yml

@@ -44,14 +44,58 @@ pip install -r requirements-dev.txt
 
 ## Levantar la aplicación
 
-```bash
-# Con Docker Compose
+La primera vez, crea la configuración local a partir del ejemplo:
 
-docker-compose up --build
+```bash
+cp config.env.example config.env
+```
+
+```bash
+# Con Docker Compose: PostgreSQL, FastAPI y React/Vite
+
+docker compose up --build
 
 # Sin Docker
 
 uvicorn main:app --reload
+```
+
+Una vez que los contenedores estén listos:
+
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
+- Swagger: http://localhost:8000/docs
+
+El frontend utiliza el proxy de Vite para enviar `/api` al contenedor del
+backend. Por eso no necesita CORS durante el desarrollo con Docker.
+
+Para detener el entorno:
+
+```bash
+docker compose down
+```
+
+Los datos de PostgreSQL y las dependencias de Node se conservan en volúmenes
+de Docker.
+
+El servicio temporal `migrate` ejecuta las migraciones de Alembic antes de
+iniciar FastAPI. Así, una base local nueva queda preparada automáticamente.
+
+## Frontend
+
+El frontend está en `frontend/` y utiliza:
+
+- React
+- Vite
+- TypeScript y TSX
+- HTML5 semántico
+- CSS propio responsive
+
+Comandos útiles dentro del contenedor:
+
+```bash
+docker compose exec frontend npm test
+docker compose exec frontend npm run build
 ```
 
 ## Endpoints principales:
@@ -78,11 +122,15 @@ pytest --cov=main --cov-report=term-missing
 
 ## CI/CD
 
-Integración continua con GitHub Actions:
+La integración continua se ejecuta en cada Pull Request hacia `main`, en cada
+push a `main` y también puede iniciarse manualmente.
 
-- **Ejecuta tests unitarios** en cada push a main.
-- **Linter con Ruff** y análisis de seguridad con Bandit y Pip-Audit.
-- **Coverage report** opcional.
+- **Backend:** pruebas unitarias, Ruff, Bandit, Pip-Audit y construcción de la
+  imagen Docker.
+- **Frontend:** instalación reproducible con `npm ci`, pruebas con Vitest,
+  compilación TypeScript/Vite y construcción de la imagen Docker de producción.
+- La imagen del backend se publica en GHCR únicamente después de un push a
+  `main`; los Pull Requests solamente construyen y validan las imágenes.
 
 Archivo del workflow: .github/workflows/test_and_build.yml.
 
